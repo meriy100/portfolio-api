@@ -12,24 +12,7 @@ import (
 )
 
 func main() {
-	//body, err := entities.FetchPost()
-	//if err != nil {
-	//	fmt.Printf("err: %v\n", err.Error())
-	//	return
-	//}
-	//
-	//var post entities.Post
-	//if err := json.Unmarshal(body, &post); err != nil {
-	//	fmt.Printf("err: %v\n", err)
-	//	return
-	//}
-	//fmt.Println(post)
-	//if err := entities.SaveItem(post.BodyMd); err != nil {
-	//	fmt.Printf("err: %v\n", err)
-	//	return
-	//}
 	ctx := context.Background()
-	//firestoreClient, err := adapters.InitialFireStoreClient(ctx, "serverless_function_source_code/serviceAccountKey.json")
 	firestoreClient, err := adapters.InitialFireStoreClient(ctx, "serviceAccountKey.json")
 
 	if err != nil {
