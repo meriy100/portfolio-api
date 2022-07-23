@@ -28,4 +28,5 @@ func main() {
 	)
 
 	profileCli.UpdateProfile()
+	profileCli.ShowProfile()
 }

@@ -16,6 +16,7 @@ func UpdatePortfolio(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Methods", "GET")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	w.Header().Set("Access-Control-Max-Age", "3600")
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 
 	ctx := context.Background()
 
@@ -26,12 +27,17 @@ func UpdatePortfolio(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	profileCli := controllers.NewProfileController(
+	profileController := controllers.NewProfileController(
 		repositories.NewPostRepository(),
 		repositories.NewProfileRepository(ctx, firestoreClient),
 		usecase.NewProfileInteractor,
 		presenters.NewProfileHttpPresenter,
 	)
 
-	profileCli.UpdateProfile(w, r)
+	switch r.Method {
+	case http.MethodGet:
+		profileController.ShowProfile(w, r)
+	case http.MethodPost:
+		profileController.UpdateProfile(w, r)
+	}
 }

@@ -29,6 +29,12 @@ func NewProfileCli(
 	}
 }
 
+func (pc *ProfileCli) ShowProfile() {
+	if err := pc.newInputPort().ShowProfile(); err != nil {
+		fmt.Println(err)
+	}
+}
+
 func (pc *ProfileCli) UpdateProfile() {
 	if err := pc.newInputPort().UpdateProfile(); err != nil {
 		fmt.Println(err)

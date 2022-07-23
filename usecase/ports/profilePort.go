@@ -6,9 +6,11 @@ import (
 
 type ProfileRepository interface {
 	Save(profile *entities.Profile) error
+	Find() (*entities.Profile, error)
 }
 
 type ProfileInputPort interface {
+	ShowProfile() error
 	UpdateProfile() error
 }
 
@@ -16,6 +18,9 @@ type ProfileOutputPort interface {
 	OutputFetchPostError(error) error
 	OutputToProfileError(error) error
 	OutputProfileSaveError(error) error
+	OutputFindProfileError(error) error
 
 	OutputSuccessUpdate() error
+
+	OutputProfile(*entities.Profile) error
 }

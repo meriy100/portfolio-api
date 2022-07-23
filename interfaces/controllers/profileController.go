@@ -29,6 +29,12 @@ func NewProfileController(
 	}
 }
 
+func (pc *ProfileController) ShowProfile(w http.ResponseWriter, r *http.Request) {
+	if err := pc.newInputPort(w).ShowProfile(); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
 func (pc *ProfileController) UpdateProfile(w http.ResponseWriter, r *http.Request) {
 	if err := pc.newInputPort(w).UpdateProfile(); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

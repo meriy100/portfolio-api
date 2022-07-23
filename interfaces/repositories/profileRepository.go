@@ -3,7 +3,6 @@ package repositories
 import (
 	"cloud.google.com/go/firestore"
 	"context"
-	"fmt"
 	"github.com/meriy100/portfolio-api/entities"
 )
 
@@ -17,18 +16,20 @@ func NewProfileRepository(ctx context.Context, client *firestore.Client) *Profil
 }
 
 func (pr *ProfileRepository) Save(profile *entities.Profile) error {
-	//ctx := context.Background()
-	//
-	//client, err := getFireBaseClient(ctx)
-	//if err != nil {
-	//	fmt.Printf("Failed getFireBaseClient(ctx): %v\n", err)
-	//	return err
-	//}
-
 	_, err := pr.client.Collection("portfolio-data-profile").Doc("1").Set(pr.ctx, profile)
 	if err != nil {
-		fmt.Printf("Failed client.Collection: %v\n", err)
 		return err
 	}
 	return nil
+}
+
+func (pr *ProfileRepository) Find() (*entities.Profile, error) {
+	var profile entities.Profile
+	dsnap, err := pr.client.Collection("portfolio-data-profile").Doc("1").Get(pr.ctx)
+	if err != nil {
+		return &profile, err
+	}
+
+	err = dsnap.DataTo(&profile)
+	return &profile, err
 }
