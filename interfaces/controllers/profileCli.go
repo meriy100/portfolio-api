@@ -5,21 +5,21 @@ import (
 	"github.com/meriy100/portfolio-api/usecase/ports"
 )
 
-type InputPortFactory func(ports.ProfileOutputPort, ports.PostRepository, ports.ProfileRepository) ports.ProfileInputPort
-type OutputPortFactory func() ports.ProfileOutputPort
+type profileCliInputPortFactory func(ports.ProfileOutputPort, ports.PostRepository, ports.ProfileRepository) ports.ProfileInputPort
+type profileCliOutputPortFactory func() ports.ProfileOutputPort
 
 type ProfileCli struct {
 	ProfileRepository ports.ProfileRepository
 	PostRepository    ports.PostRepository
-	InputPortFactory  InputPortFactory
-	OutputPortFactory OutputPortFactory
+	InputPortFactory  profileCliInputPortFactory
+	OutputPortFactory profileCliOutputPortFactory
 }
 
 func NewProfileCli(
 	postRepository ports.PostRepository,
 	profileRepository ports.ProfileRepository,
-	inputFactory InputPortFactory,
-	outputFactory OutputPortFactory,
+	inputFactory profileCliInputPortFactory,
+	outputFactory profileCliOutputPortFactory,
 ) *ProfileCli {
 	return &ProfileCli{
 		profileRepository,

@@ -41,7 +41,7 @@ func main() {
 		repositories.NewPostRepository(),
 		repositories.NewProfileRepository(ctx, firestoreClient),
 		usecase.NewProfileInteractor,
-		presenters.NewProfilePresenter,
+		presenters.NewProfileCliPresenter,
 	)
 
 	profileCli.UpdateProfile()
