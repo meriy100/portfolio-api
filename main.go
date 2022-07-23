@@ -1,11 +1,16 @@
 package p
 
 import (
+	"cloud.google.com/go/firestore"
+	"context"
 	"encoding/json"
+	firebase "firebase.google.com/go"
 	"fmt"
+	"google.golang.org/api/option"
 	"io/ioutil"
 	"net/http"
 	"os"
+	"time"
 )
 
 type Post struct {
@@ -30,6 +35,43 @@ func fetchPost() ([]byte, error) {
 		return []byte{}, err
 	}
 	return byteArray, nil
+}
+
+func getFireBaseClient(ctx context.Context) (*firestore.Client, error) {
+	opt := option.WithCredentialsFile("serviceAccountKey.json")
+	app, err := firebase.NewApp(ctx, nil, opt)
+	if err != nil {
+		return nil, err
+	}
+
+	return app.Firestore(ctx)
+}
+
+type PortfolioData struct {
+	Job         string
+	Description string
+	Timestamp   time.Time
+}
+
+func SaveItem(body string) error {
+	ctx := context.Background()
+
+	client, err := getFireBaseClient(ctx)
+	if err != nil {
+		return err
+	}
+
+	item := PortfolioData{
+		Job:         body,
+		Description: body,
+		Timestamp:   time.Now(),
+	}
+	_, err = client.Collection("portfolio-data-profile").Doc("1").Set(ctx, item)
+	if err != nil {
+		fmt.Println("oh no")
+		return err
+	}
+	return nil
 }
 
 func FetchPortfolio(w http.ResponseWriter, r *http.Request) {
@@ -81,4 +123,8 @@ func main() {
 		return
 	}
 	fmt.Println(post)
+	if err := SaveItem(post.BodyMd); err != nil {
+		fmt.Printf("err: %v\n", err)
+		return
+	}
 }
