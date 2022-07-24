@@ -1,7 +1,6 @@
 package p
 
 import (
-	"context"
 	"fmt"
 	"github.com/meriy100/portfolio-api/adapters"
 	"github.com/meriy100/portfolio-api/interfaces/controllers"
@@ -18,7 +17,7 @@ func UpdatePortfolio(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Max-Age", "3600")
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 
-	ctx := context.Background()
+	ctx := r.Context()
 
 	firestoreClient, err := adapters.InitialFireStoreClient(ctx, "serverless_function_source_code/serviceAccountKey.json")
 
@@ -34,9 +33,18 @@ func UpdatePortfolio(w http.ResponseWriter, r *http.Request) {
 		presenters.NewProfileHttpPresenter,
 	)
 
+	fmt.Printf("query parameter : %s\n", r.FormValue("t"))
+
 	switch r.Method {
 	case http.MethodGet:
-		profileController.ShowProfile(w, r)
+		switch r.FormValue("t") {
+		case "portfolio":
+			profileController.ShowProfile(w, r)
+		case "histories":
+		default:
+			profileController.ShowProfile(w, r)
+		}
+
 	case http.MethodPost:
 		profileController.UpdateProfile(w, r)
 	}
