@@ -12,7 +12,7 @@ type Month struct {
 type Product struct {
 	Title        string
 	StartMonth   Month
-	EndMonth     Month
+	EndMonth     *Month
 	Description  string
 	Technologies []string
 }

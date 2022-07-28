@@ -43,8 +43,12 @@ func (pp *ProfileHttpPresenter) OutputSuccessUpdate() error {
 	return err
 }
 
+type ResponseData struct {
+	Data interface{} `json:"data"`
+}
+
 func (pp *ProfileHttpPresenter) OutputProfile(profile *entities.Profile) error {
-	j, err := json.Marshal(profile)
+	j, err := json.Marshal(ResponseData{profile})
 	if err != nil {
 		return err
 	}
