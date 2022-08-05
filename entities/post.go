@@ -33,55 +33,65 @@ func (p *Post) ToProfile() (*Profile, error) {
 
 func (p *Post) ToHistories() ([]History, error) {
 	var histories []History
-	organizationParts := regexp.MustCompile("(^|\n)#\\s+").Split(p.BodyMd, -1)
+	historyParts := splitLv1(p.BodyMd)
 
-	for _, op := range organizationParts {
-		if len(strings.TrimSpace(op)) > 0 {
-			history := History{}
-			orgName, orgBody := separateHeadTail(op)
-			history.Organization = orgName
-			productParts := regexp.MustCompile("(^|\n)##\\s+").Split(orgBody, -1)
-			for _, pp := range productParts {
-				if len(strings.TrimSpace(pp)) > 0 {
-					product := Product{}
-					prdName, prdBody := separateHeadTail(pp)
-					product.Title = prdName
-
-					productColumns := regexp.MustCompile("(^|\n)###\\s+").Split(prdBody, -1)
-					for _, pc := range productColumns {
-						if len(strings.TrimSpace(pc)) > 0 {
-							key, body := separateHeadTail(pc)
-							switch key {
-							case "startMonth":
-								sm, err := strToMonth(body)
-								if err != nil {
-									return []History{}, err
-								}
-								product.StartMonth = sm
-							case "endMonth":
-								if len(body) != 0 {
-									em, err := strToMonth(body)
-									if err != nil {
-										return []History{}, err
-									}
-									product.EndMonth = &em
-								}
-							case "description":
-								product.Description = mdListToSlice(body)
-							case "technologyUsed":
-								product.Technologies = mdListToSlice(body)
-							default:
-								fmt.Printf("key: %v\n", key)
-							}
-						}
-					}
-					history.Products = append(history.Products, product)
-				}
-			}
-			histories = append(histories, history)
+	for _, hp := range historyParts {
+		history, err := toHistory(hp)
+		if err != nil {
+			return histories, err
 		}
+		histories = append(histories, history)
 	}
 	return histories, nil
+}
+
+func toHistory(historyPart string) (History, error) {
+	history := History{}
+	orgName, body := separateHeadTail(historyPart)
+	history.Organization = orgName
+	productParts := splitLv2(body)
+	for _, pp := range productParts {
+		product, err := toProduct(pp)
+		if err != nil {
+			return History{}, err
+		}
+		history.Products = append(history.Products, product)
+	}
+	return history, nil
+}
+
+func toProduct(productPart string) (Product, error) {
+	product := Product{}
+	prdName, prdBody := separateHeadTail(productPart)
+	product.Title = prdName
+
+	productColumns := splitLv3(prdBody)
+	for _, pc := range productColumns {
+		key, body := separateHeadTail(pc)
+		switch key {
+		case "startMonth":
+			sm, err := strToMonth(body)
+			if err != nil {
+				return Product{}, err
+			}
+			product.StartMonth = sm
+		case "endMonth":
+			if len(body) != 0 {
+				em, err := strToMonth(body)
+				if err != nil {
+					return Product{}, err
+				}
+				product.EndMonth = &em
+			}
+		case "description":
+			product.Description = mdListToSlice(body)
+		case "technologyUsed":
+			product.Technologies = mdListToSlice(body)
+		default:
+			fmt.Printf("key: %v\n", key)
+		}
+	}
+	return product, nil
 }
 
 func separateHeadTail(s string) (string, string) {
@@ -127,4 +137,26 @@ func mdListToSlice(s string) []string {
 	}
 
 	return ss
+}
+
+func sliceCompact(xs []string) []string {
+	var ss []string
+	for _, s := range xs {
+		if len(strings.TrimSpace(s)) > 0 {
+			ss = append(ss, strings.TrimSpace(s))
+		}
+	}
+	return ss
+}
+
+func splitLv1(s string) []string {
+	return sliceCompact(regexp.MustCompile("(^|\n)#\\s+").Split(s, -1))
+}
+
+func splitLv2(s string) []string {
+	return sliceCompact(regexp.MustCompile("(^|\n)##\\s+").Split(s, -1))
+}
+
+func splitLv3(s string) []string {
+	return sliceCompact(regexp.MustCompile("(^|\n)###\\s+").Split(s, -1))
 }
