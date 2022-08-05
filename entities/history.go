@@ -2,6 +2,7 @@ package entities
 
 type History struct {
 	Organization string
+	Products     []Product
 }
 
 type Month struct {
@@ -13,6 +14,6 @@ type Product struct {
 	Title        string
 	StartMonth   Month
 	EndMonth     *Month
-	Description  string
+	Description  []string
 	Technologies []string
 }
