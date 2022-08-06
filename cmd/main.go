@@ -40,4 +40,5 @@ func main() {
 	profileCli.ShowProfile()
 
 	historyCli.UpdateHistories()
+	historyCli.IndexHistories()
 }

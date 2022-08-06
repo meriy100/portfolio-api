@@ -28,7 +28,19 @@ func (h *HistoryPresenter) OutputHistorySaveError(history *entities.History, err
 	return nil
 }
 
+func (h *HistoryPresenter) OutputFetchHistoriesError(err error) error {
+	fmt.Printf("OutputFetchHistoriesError: %v\n", err)
+	return nil
+}
+
 func (h *HistoryPresenter) OutputSuccessUpdate() error {
 	fmt.Printf("Success Update Histories!")
+	return nil
+}
+func (h *HistoryPresenter) OutputHistories(histories []*entities.History) error {
+	fmt.Printf("Histories:\n")
+	for _, history := range histories {
+		fmt.Printf("%v\n", history)
+	}
 	return nil
 }

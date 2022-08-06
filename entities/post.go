@@ -31,8 +31,8 @@ func (p *Post) ToProfile() (*Profile, error) {
 	return NewProfile(job, description), nil
 }
 
-func (p *Post) ToHistories() ([]History, error) {
-	var histories []History
+func (p *Post) ToHistories() ([]*History, error) {
+	var histories []*History
 	historyParts := splitLv1(p.BodyMd)
 
 	for _, hp := range historyParts {
@@ -40,7 +40,7 @@ func (p *Post) ToHistories() ([]History, error) {
 		if err != nil {
 			return histories, err
 		}
-		histories = append(histories, history)
+		histories = append(histories, &history)
 	}
 	return histories, nil
 }

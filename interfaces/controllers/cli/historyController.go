@@ -33,7 +33,12 @@ func (h *HistoryController) UpdateHistories() {
 	if err := h.newInputPort().UpdateHistories(); err != nil {
 		fmt.Println(err)
 	}
+}
 
+func (h *HistoryController) IndexHistories() {
+	if err := h.newInputPort().IndexHistories(); err != nil {
+		fmt.Println(err)
+	}
 }
 
 func (h *HistoryController) newInputPort() ports.HistoryInputPort {

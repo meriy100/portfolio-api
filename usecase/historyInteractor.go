@@ -28,11 +28,19 @@ func (h *HistoryInteractor) UpdateHistories() error {
 	}
 
 	for _, history := range histories {
-		err := h.HistoryRepository.Save(&history)
+		err := h.HistoryRepository.Save(history)
 		if err != nil {
-			return h.outputPort.OutputHistorySaveError(&history, err)
+			return h.outputPort.OutputHistorySaveError(history, err)
 		}
 	}
 
 	return h.outputPort.OutputSuccessUpdate()
+}
+
+func (h *HistoryInteractor) IndexHistories() error {
+	histories, err := h.HistoryRepository.All()
+	if err != nil {
+		return h.outputPort.OutputFetchHistoriesError(err)
+	}
+	return h.outputPort.OutputHistories(histories)
 }
