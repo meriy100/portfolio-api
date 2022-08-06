@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"github.com/meriy100/portfolio-api/adapters"
 	"github.com/meriy100/portfolio-api/interfaces/controllers"
+	controllerCli "github.com/meriy100/portfolio-api/interfaces/controllers/cli"
 	"github.com/meriy100/portfolio-api/interfaces/presenters"
+	presenterCli "github.com/meriy100/portfolio-api/interfaces/presenters/cli"
 	"github.com/meriy100/portfolio-api/interfaces/repositories"
 	"github.com/meriy100/portfolio-api/usecase"
 	"os"
@@ -27,6 +29,15 @@ func main() {
 		presenters.NewProfileCliPresenter,
 	)
 
+	historyCli := controllerCli.NewHistoryController(
+		repositories.NewHistoryRepository(ctx, firestoreClient),
+		repositories.NewPostRepository(),
+		usecase.NewHistoryInteractor,
+		presenterCli.NewHistoryPresenter,
+	)
+
 	profileCli.UpdateProfile()
 	profileCli.ShowProfile()
+
+	historyCli.UpdateHistories()
 }
