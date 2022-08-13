@@ -1,4 +1,4 @@
-package presenters
+package http
 
 import (
 	"encoding/json"
@@ -8,46 +8,42 @@ import (
 	"net/http"
 )
 
-type ProfileHttpPresenter struct {
+type ProfilePresenter struct {
 	w http.ResponseWriter
 }
 
-func NewProfileHttpPresenter(w http.ResponseWriter) ports.ProfileOutputPort {
-	return &ProfileHttpPresenter{w}
+func NewProfilePresenter(w http.ResponseWriter) ports.ProfileOutputPort {
+	return &ProfilePresenter{w}
 }
 
-func (pp *ProfileHttpPresenter) OutputFetchPostError(err error) error {
+func (pp *ProfilePresenter) OutputFetchPostError(err error) error {
 	http.Error(pp.w, fmt.Sprintf("OutputFetchPostError: %v", err.Error()), http.StatusInternalServerError)
 
 	return nil
 }
 
-func (pp *ProfileHttpPresenter) OutputFindProfileError(err error) error {
+func (pp *ProfilePresenter) OutputFindProfileError(err error) error {
 	http.Error(pp.w, fmt.Sprintf("OutputFindProfileError: %v", err.Error()), http.StatusInternalServerError)
 
 	return nil
 }
 
-func (pp *ProfileHttpPresenter) OutputToProfileError(err error) error {
+func (pp *ProfilePresenter) OutputToProfileError(err error) error {
 	http.Error(pp.w, fmt.Sprintf("OutputToProfileError: %v\n", err.Error()), http.StatusInternalServerError)
 	return nil
 }
 
-func (pp *ProfileHttpPresenter) OutputProfileSaveError(err error) error {
+func (pp *ProfilePresenter) OutputProfileSaveError(err error) error {
 	http.Error(pp.w, fmt.Sprintf("OutputProfileSaveError: %v\n", err.Error()), http.StatusInternalServerError)
 	return nil
 }
 
-func (pp *ProfileHttpPresenter) OutputSuccessUpdate() error {
+func (pp *ProfilePresenter) OutputSuccessUpdate() error {
 	_, err := fmt.Fprintf(pp.w, "Success Update Profile!")
 	return err
 }
 
-type ResponseData struct {
-	Data interface{} `json:"data"`
-}
-
-func (pp *ProfileHttpPresenter) OutputProfile(profile *entities.Profile) error {
+func (pp *ProfilePresenter) OutputProfile(profile *entities.Profile) error {
 	j, err := json.Marshal(ResponseData{profile})
 	if err != nil {
 		return err

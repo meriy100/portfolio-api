@@ -1,4 +1,4 @@
-package controllers
+package http
 
 import (
 	"github.com/meriy100/portfolio-api/usecase/ports"

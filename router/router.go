@@ -5,9 +5,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/meriy100/portfolio-api/adapters"
-	"github.com/meriy100/portfolio-api/interfaces/controllers"
 	controllerHttp "github.com/meriy100/portfolio-api/interfaces/controllers/http"
-	"github.com/meriy100/portfolio-api/interfaces/presenters"
 	presenterHttp "github.com/meriy100/portfolio-api/interfaces/presenters/http"
 	"github.com/meriy100/portfolio-api/interfaces/repositories"
 	"github.com/meriy100/portfolio-api/usecase"
@@ -46,11 +44,11 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, fmt.Sprintf("Error initial firestore client : %v\n", err.Error()), http.StatusInternalServerError)
 		return
 	}
-	profileController := controllers.NewProfileController(
+	profileController := controllerHttp.NewProfileController(
 		repositories.NewPostRepository(),
 		repositories.NewProfileRepository(ctx, firestoreClient),
 		usecase.NewProfileInteractor,
-		presenters.NewProfileHttpPresenter,
+		presenterHttp.NewProfilePresenter,
 	)
 
 	switch r.Method {
