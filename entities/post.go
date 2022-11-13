@@ -12,20 +12,19 @@ type Post struct {
 }
 
 func (p *Post) ToProfile() (*Profile, error) {
-	parts := strings.Split(p.BodyMd, "##")
+	parts := splitLv2(p.BodyMd)
 
 	var job string
 	var description string
 
 	for _, part := range parts {
-		if strings.HasPrefix(part, " job") {
-			job = strings.Replace(part, "job\r\n", "", 1)
+		key, body := separateHeadTail(part)
+		switch key {
+		case "job":
+			job = compactNl(body)
+		case "description":
+			description = compactNl(body)
 		}
-
-		if strings.HasPrefix(part, " description") {
-			description = strings.Replace(part, "description\r\n", "", 1)
-		}
-
 	}
 
 	return NewProfile(job, description), nil
@@ -147,6 +146,10 @@ func sliceCompact(xs []string) []string {
 		}
 	}
 	return ss
+}
+
+func compactNl(s string) string {
+	return strings.Replace(strings.Replace(s, "\r", "", -1), "\n\n", "\n", -1)
 }
 
 func splitLv1(s string) []string {
