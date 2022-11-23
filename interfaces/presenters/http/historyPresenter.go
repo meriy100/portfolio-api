@@ -6,6 +6,7 @@ import (
 	"github.com/meriy100/portfolio-api/entities"
 	"github.com/meriy100/portfolio-api/usecase/ports"
 	"net/http"
+	"sort"
 )
 
 type HistoryPresenter struct {
@@ -41,7 +42,25 @@ func (h *HistoryPresenter) OutputSuccessUpdate() error {
 	return err
 }
 func (h *HistoryPresenter) OutputHistories(histories []*entities.History) error {
-	j, err := json.Marshal(ResponseData{histories})
+	type historyData struct {
+		entities.History
+		StartMonth entities.Month  `json:"startMonth"`
+		EndMonth   *entities.Month `json:"endMonth"`
+	}
+	var data []*historyData
+	for _, h := range histories {
+		data = append(data, &historyData{
+			*h,
+			h.StartMonth(),
+			h.EndMonth(),
+		})
+	}
+
+	sort.SliceStable(data, func(x, y int) bool {
+		return entities.CompareMonth(data[x].StartMonth, data[y].StartMonth) == -1
+	})
+
+	j, err := json.Marshal(ResponseData{data})
 	if err != nil {
 		return err
 	}
