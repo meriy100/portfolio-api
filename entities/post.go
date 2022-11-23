@@ -17,6 +17,8 @@ func (p *Post) ToProfile() (*Profile, error) {
 	var job string
 	var description string
 	var skillDescription []string
+	var licenses []string
+	var pr string
 
 	for _, part := range parts {
 		key, body := separateHeadTail(part)
@@ -27,10 +29,14 @@ func (p *Post) ToProfile() (*Profile, error) {
 			description = compactNl(body)
 		case "skillDescription":
 			skillDescription = mdListToSlice(body)
+		case "licenses":
+			licenses = mdListToSlice(body)
+		case "pr":
+			pr = compactNl(body)
 		}
 	}
 
-	return NewProfile(job, description, skillDescription), nil
+	return NewProfile(job, description, skillDescription, licenses, pr), nil
 }
 
 func (p *Post) ToHistories() ([]*History, error) {
