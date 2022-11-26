@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/meriy100/portfolio-api/entities"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 )
@@ -28,9 +28,13 @@ func (pr *PostRepository) FetchPost(postId int) (*entities.Post, error) {
 	if err != nil {
 		return &post, err
 	}
+
+	if resp.StatusCode >= 400 {
+		return nil, fmt.Errorf("bad response status code %d", resp.StatusCode)
+	}
 	defer resp.Body.Close()
 
-	byteArray, err := ioutil.ReadAll(resp.Body)
+	byteArray, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return &post, err
 	}
