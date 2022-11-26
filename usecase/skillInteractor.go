@@ -1,7 +1,6 @@
 package usecase
 
 import (
-	"github.com/meriy100/portfolio-api/entities"
 	"github.com/meriy100/portfolio-api/usecase/ports"
 )
 
@@ -25,7 +24,7 @@ func (s *SkillInteractor) UpdateSkills() error {
 		return s.outputPort.OutputFetchPostError(err)
 	}
 
-	skills, err := entities.ToSkills(post)
+	skills, err := post.ToSkills()
 	if err != nil {
 		return s.outputPort.OutputToSkillsError(err)
 	}

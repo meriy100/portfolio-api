@@ -53,6 +53,55 @@ func (p *Post) ToHistories() ([]*History, error) {
 	return histories, nil
 }
 
+func (p *Post) ToSkills() ([]*Skill, error) {
+	var skills []*Skill
+	parts := splitLv1(p.BodyMd)
+	for _, part := range parts {
+		head, body := separateHeadTail(part)
+		category, err := skillCategoryDecoder(head)
+		if err != nil {
+			return skills, err
+		}
+		for _, skillPart := range splitLv2(body) {
+			skill, err := toSkill(skillPart, category)
+			if err != nil {
+				return skills, err
+			}
+
+			skills = append(skills, skill)
+		}
+
+	}
+	return skills, nil
+}
+
+func toSkill(part string, category SkillCategory) (*Skill, error) {
+	var lv int
+	var description string
+	head, body := separateHeadTail(part)
+
+	name := strings.TrimSpace(head)
+
+	for _, p := range splitLv3(body) {
+		key, text := separateHeadTail(p)
+		switch key {
+		case "lv":
+			i, err := strconv.Atoi(strings.TrimSpace(text))
+			if err != nil {
+				return &Skill{}, fmt.Errorf("%s's lv decode error. %s", name, err.Error())
+			}
+
+			lv = i
+		case "description":
+			description = compactNl(text)
+		default:
+			fmt.Printf("key: %v\n", key)
+		}
+	}
+
+	return NewSkill(name, lv, description, category), nil
+}
+
 func toHistory(historyPart string) (History, error) {
 	history := History{}
 	orgName, body := separateHeadTail(historyPart)
@@ -103,7 +152,7 @@ func toProduct(productPart string) (Product, error) {
 }
 
 func separateHeadTail(s string) (string, string) {
-	ss := strings.SplitN(s, "\r\n", 2)
+	ss := strings.SplitN(strings.Replace(s, "\r", "", -1), "\n", 2)
 	switch len(ss) {
 	case 1:
 		return strings.TrimSpace(ss[0]), ""
