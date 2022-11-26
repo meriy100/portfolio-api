@@ -96,6 +96,7 @@ func Skills(w http.ResponseWriter, r *http.Request) {
 	skillController := controllerHttp.NewSkillController(
 		repositories.NewSkillRepository(ctx, firestoreClient),
 		repositories.NewPostRepository(),
+		repositories.NewHistoryRepository(ctx, firestoreClient),
 		usecase.NewSkillInteractor,
 		presenterHttp.NewSkillPresenter,
 	)

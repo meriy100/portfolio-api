@@ -6,12 +6,13 @@ import (
 	"net/http"
 )
 
-type skillInputPortFactory func(ports.SkillOutputPort, ports.PostRepository, ports.SkillRepository) ports.SkillInputPort
+type skillInputPortFactory func(ports.SkillOutputPort, ports.PostRepository, ports.HistoryRepository, ports.SkillRepository) ports.SkillInputPort
 type skillOutputPortFactory func(http.ResponseWriter) ports.SkillOutputPort
 
 type SkillController struct {
 	SkillRepository   ports.SkillRepository
 	PostRepository    ports.PostRepository
+	HistoryRepository ports.HistoryRepository
 	InputPortFactory  skillInputPortFactory
 	OutputPortFactory skillOutputPortFactory
 }
@@ -19,12 +20,14 @@ type SkillController struct {
 func NewSkillController(
 	skillRepository ports.SkillRepository,
 	postRepository ports.PostRepository,
+	historyRepository ports.HistoryRepository,
 	inputFactory skillInputPortFactory,
 	outputFactory skillOutputPortFactory,
 ) *SkillController {
 	return &SkillController{
 		skillRepository,
 		postRepository,
+		historyRepository,
 		inputFactory,
 		outputFactory,
 	}
@@ -42,5 +45,5 @@ func (h *SkillController) IndexSkills(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *SkillController) newInputPort(w http.ResponseWriter) ports.SkillInputPort {
-	return h.InputPortFactory(h.OutputPortFactory(w), h.PostRepository, h.SkillRepository)
+	return h.InputPortFactory(h.OutputPortFactory(w), h.PostRepository, h.HistoryRepository, h.SkillRepository)
 }
