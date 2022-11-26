@@ -34,9 +34,19 @@ func main() {
 		presenterCli.NewHistoryPresenter,
 	)
 
+	skillController := controllerCli.NewSkillController(
+		repositories.NewSkillRepository(ctx, firestoreClient),
+		repositories.NewPostRepository(),
+		usecase.NewSkillInteractor,
+		presenterCli.NewSkillPresenter,
+	)
+
 	profileController.UpdateProfile()
 	profileController.ShowProfile()
 
 	historyController.UpdateHistories()
 	historyController.IndexHistories()
+
+	skillController.UpdateSkills()
+	skillController.IndexSkills()
 }
