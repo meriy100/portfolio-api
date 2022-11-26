@@ -82,3 +82,28 @@ func Histories(w http.ResponseWriter, r *http.Request) {
 		historyController.UpdateHistories(w, r)
 	}
 }
+
+func Skills(w http.ResponseWriter, r *http.Request) {
+	setHeader(w, r)
+	ctx := r.Context()
+	firestoreClient, err := initialFirestoreClient(ctx)
+
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Error initial firestore client : %v\n", err.Error()), http.StatusInternalServerError)
+		return
+	}
+
+	skillController := controllerHttp.NewSkillController(
+		repositories.NewSkillRepository(ctx, firestoreClient),
+		repositories.NewPostRepository(),
+		usecase.NewSkillInteractor,
+		presenterHttp.NewSkillPresenter,
+	)
+
+	switch r.Method {
+	case http.MethodGet:
+		skillController.IndexSkills(w, r)
+	case http.MethodPost:
+		skillController.UpdateSkills(w, r)
+	}
+}

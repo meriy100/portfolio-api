@@ -12,3 +12,7 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 func Histories(w http.ResponseWriter, r *http.Request) {
 	router.Histories(w, r)
 }
+
+func Skills(w http.ResponseWriter, r *http.Request) {
+	router.Skills(w, r)
+}
