@@ -1,19 +1,23 @@
 package usecase
 
 import (
+	"github.com/meriy100/portfolio-api/entities"
 	"github.com/meriy100/portfolio-api/usecase/ports"
+	"time"
 )
 
 type SkillInteractor struct {
-	outputPort      ports.SkillOutputPort
-	postRepository  ports.PostRepository
-	skillRepository ports.SkillRepository
+	outputPort        ports.SkillOutputPort
+	postRepository    ports.PostRepository
+	historyRepository ports.HistoryRepository
+	skillRepository   ports.SkillRepository
 }
 
-func NewSkillInteractor(outputPort ports.SkillOutputPort, postRepository ports.PostRepository, skillRepository ports.SkillRepository) ports.SkillInputPort {
+func NewSkillInteractor(outputPort ports.SkillOutputPort, postRepository ports.PostRepository, historyRepository ports.HistoryRepository, skillRepository ports.SkillRepository) ports.SkillInputPort {
 	return &SkillInteractor{
 		outputPort,
 		postRepository,
+		historyRepository,
 		skillRepository,
 	}
 }
@@ -29,7 +33,21 @@ func (s *SkillInteractor) UpdateSkills() error {
 		return s.outputPort.OutputToSkillsError(err)
 	}
 
+	histories, err := s.historyRepository.All()
+	if err != nil {
+		return s.outputPort.OutputFetchSkillsError(err)
+	}
+
+	skillMap := entities.SkillMap{}
+
+	for _, history := range histories {
+		skillMap = history.SkillMap(skillMap)
+	}
+
+	now := entities.Month{Year: time.Now().Year(), Month: int(time.Now().Month())}
+
 	for _, skill := range skills {
+		skill.DurationMonth = entities.SumTerm(now, skillMap[skill.Name])
 		err := s.skillRepository.Save(skill)
 		if err != nil {
 			return s.outputPort.OutputSkillSaveError(skill, err)

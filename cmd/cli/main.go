@@ -37,6 +37,7 @@ func main() {
 	skillController := controllerCli.NewSkillController(
 		repositories.NewSkillRepository(ctx, firestoreClient),
 		repositories.NewPostRepository(),
+		repositories.NewHistoryRepository(ctx, firestoreClient),
 		usecase.NewSkillInteractor,
 		presenterCli.NewSkillPresenter,
 	)

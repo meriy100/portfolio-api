@@ -29,6 +29,15 @@ func (tPR *TestPostRepository) FetchPost(postId int) (*entities.Post, error) {
 	return tPR.post, nil
 }
 
+type historyRepositoryMock struct {
+	ports.HistoryRepository
+	all []*entities.History
+}
+
+func (h *historyRepositoryMock) All() ([]*entities.History, error) {
+	return h.all, nil
+}
+
 type TestSkillRepository struct {
 	ports.SkillRepository
 	insert []*entities.Skill
@@ -49,9 +58,10 @@ func (tSR *TestSkillRepository) All() ([]*entities.Skill, error) {
 
 func TestNewSkillInteractor(t *testing.T) {
 	type args struct {
-		outputPort      ports.SkillOutputPort
-		postRepository  ports.PostRepository
-		skillRepository ports.SkillRepository
+		outputPort        ports.SkillOutputPort
+		postRepository    ports.PostRepository
+		historyRepository ports.HistoryRepository
+		skillRepository   ports.SkillRepository
 	}
 	tests := []struct {
 		name string
@@ -62,7 +72,7 @@ func TestNewSkillInteractor(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := NewSkillInteractor(tt.args.outputPort, tt.args.postRepository, tt.args.skillRepository); !reflect.DeepEqual(got, tt.want) {
+			if got := NewSkillInteractor(tt.args.outputPort, tt.args.postRepository, tt.args.historyRepository, tt.args.skillRepository); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("NewSkillInteractor() = %v, want %v", got, tt.want)
 			}
 		})
@@ -71,9 +81,10 @@ func TestNewSkillInteractor(t *testing.T) {
 
 func TestSkillInteractor_IndexSkills(t *testing.T) {
 	type fields struct {
-		outputPort      ports.SkillOutputPort
-		postRepository  ports.PostRepository
-		skillRepository ports.SkillRepository
+		outputPort        ports.SkillOutputPort
+		postRepository    ports.PostRepository
+		historyRepository ports.HistoryRepository
+		skillRepository   ports.SkillRepository
 	}
 	tests := []struct {
 		name    string
@@ -85,9 +96,10 @@ func TestSkillInteractor_IndexSkills(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			s := &SkillInteractor{
-				outputPort:      tt.fields.outputPort,
-				postRepository:  tt.fields.postRepository,
-				skillRepository: tt.fields.skillRepository,
+				outputPort:        tt.fields.outputPort,
+				postRepository:    tt.fields.postRepository,
+				historyRepository: tt.fields.historyRepository,
+				skillRepository:   tt.fields.skillRepository,
 			}
 			if err := s.IndexSkills(); (err != nil) != tt.wantErr {
 				t.Errorf("IndexSkills() error = %v, wantErr %v", err, tt.wantErr)
@@ -107,9 +119,10 @@ func findSkill(name string, skills []*entities.Skill) *entities.Skill {
 }
 func TestSkillInteractor_UpdateSkills(t *testing.T) {
 	type fields struct {
-		outputPort      ports.SkillOutputPort
-		postRepository  ports.PostRepository
-		skillRepository *TestSkillRepository
+		outputPort        ports.SkillOutputPort
+		postRepository    ports.PostRepository
+		historyRepository ports.HistoryRepository
+		skillRepository   *TestSkillRepository
 	}
 	tests := []struct {
 		name    string
@@ -124,6 +137,7 @@ func TestSkillInteractor_UpdateSkills(t *testing.T) {
 				&TestPostRepository{
 					post: &entities.Post{BodyMd: "# os\n## test\n### description\ntestD\n### lv\n2\n"},
 				},
+				&historyRepositoryMock{all: []*entities.History{}},
 				&TestSkillRepository{},
 			},
 			[]*entities.Skill{
@@ -140,9 +154,10 @@ func TestSkillInteractor_UpdateSkills(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			s := &SkillInteractor{
-				outputPort:      tt.fields.outputPort,
-				postRepository:  tt.fields.postRepository,
-				skillRepository: tt.fields.skillRepository,
+				outputPort:        tt.fields.outputPort,
+				postRepository:    tt.fields.postRepository,
+				historyRepository: tt.fields.historyRepository,
+				skillRepository:   tt.fields.skillRepository,
 			}
 			if err := s.UpdateSkills(); (err != nil) != tt.wantErr {
 				t.Errorf("UpdateSkills() error = %v, wantErr %v", err, tt.wantErr)

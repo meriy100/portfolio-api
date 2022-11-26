@@ -5,31 +5,12 @@ type History struct {
 	Products     []Product `json:"products"`
 }
 
-type Month struct {
-	Year  int `json:"year"`
-	Month int `json:"month"`
-}
-
 type Product struct {
 	Title        string   `json:"title"`
 	StartMonth   Month    `json:"startMonth"`
 	EndMonth     *Month   `json:"endMonth"`
 	Description  []string `json:"description"`
 	Technologies []string `json:"technologies"`
-}
-
-func CompareMonth(x, y Month) int {
-	if x.Year == y.Year {
-		if x.Month < y.Month {
-			return -1
-		} else {
-			return 1
-		}
-	}
-	if x.Year < y.Year {
-		return -1
-	}
-	return 1
 }
 
 func (h *History) StartMonth() Month {
@@ -58,4 +39,18 @@ func (h *History) EndMonth() *Month {
 		}
 	}
 	return endMonth
+}
+
+type SkillMap map[string][]Term
+
+func (h *History) SkillMap(skillMap SkillMap) SkillMap {
+	for _, product := range h.Products {
+		for _, technology := range product.Technologies {
+			if skillMap[technology] == nil {
+				skillMap[technology] = []Term{}
+			}
+			skillMap[technology] = append(skillMap[technology], Term{product.StartMonth, product.EndMonth})
+		}
+	}
+	return skillMap
 }

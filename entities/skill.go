@@ -19,11 +19,12 @@ const (
 )
 
 type Skill struct {
-	Name        string
-	Lv          int
-	Description string
-	Category    SkillCategory
-	Timestamp   time.Time `json:"timestamp"`
+	Name          string
+	Lv            int
+	Description   string
+	Category      SkillCategory
+	DurationMonth int
+	Timestamp     time.Time `json:"timestamp"`
 }
 
 func NewSkill(name string, lv int, description string, category SkillCategory) *Skill {
@@ -32,6 +33,7 @@ func NewSkill(name string, lv int, description string, category SkillCategory) *
 		lv,
 		description,
 		category,
+		0,
 		time.Now(),
 	}
 }

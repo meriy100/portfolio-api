@@ -5,12 +5,13 @@ import (
 	"github.com/meriy100/portfolio-api/usecase/ports"
 )
 
-type skillInputPortFactory func(ports.SkillOutputPort, ports.PostRepository, ports.SkillRepository) ports.SkillInputPort
+type skillInputPortFactory func(ports.SkillOutputPort, ports.PostRepository, ports.HistoryRepository, ports.SkillRepository) ports.SkillInputPort
 type skillOutputPortFactory func() ports.SkillOutputPort
 
 type SkillController struct {
 	SkillRepository   ports.SkillRepository
 	PostRepository    ports.PostRepository
+	HistoryRepository ports.HistoryRepository
 	InputPortFactory  skillInputPortFactory
 	OutputPortFactory skillOutputPortFactory
 }
@@ -18,12 +19,14 @@ type SkillController struct {
 func NewSkillController(
 	skillRepository ports.SkillRepository,
 	postRepository ports.PostRepository,
+	historyRepository ports.HistoryRepository,
 	inputFactory skillInputPortFactory,
 	outputFactory skillOutputPortFactory,
 ) *SkillController {
 	return &SkillController{
 		skillRepository,
 		postRepository,
+		historyRepository,
 		inputFactory,
 		outputFactory,
 	}
@@ -42,5 +45,5 @@ func (s *SkillController) IndexSkills() {
 }
 
 func (s *SkillController) newInputPort() ports.SkillInputPort {
-	return s.InputPortFactory(s.OutputPortFactory(), s.PostRepository, s.SkillRepository)
+	return s.InputPortFactory(s.OutputPortFactory(), s.PostRepository, s.HistoryRepository, s.SkillRepository)
 }
