@@ -2,17 +2,30 @@ package entities
 
 type Term struct {
 	StartMonth Month
-	EndMonth   *Month
+	EndMonth   Month
 }
 
-func SumTerm(now Month, terms []Term) int {
-	month := 0
+func ToTerm(startMonth Month, endMonth *Month, now Month) Term {
+	if endMonth != nil {
+		return Term{startMonth, *endMonth}
+	}
+	return Term{startMonth, now}
+}
+
+func SumTerm(terms []Term) int {
+	months := map[Month]bool{}
 	for _, term := range terms {
-		if term.EndMonth != nil {
-			month = month + subMonth(*term.EndMonth, term.StartMonth)
-		} else {
-			month = month + subMonth(now, term.StartMonth)
+		for _, month := range rangeMonths(terms) {
+			months[month] = true
 		}
 	}
-	return month
+	return len(months)
+}
+
+func rangeMonths(term Term) []Month {
+	ms := []Month{}
+	for m := term.StartMonth; m == term.EndMonth; m = nextMonth(term.StartMonth) {
+		ms = append(ms, m)
+	}
+	return ms
 }

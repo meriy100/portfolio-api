@@ -22,3 +22,10 @@ func CompareMonth(x, y Month) int {
 	}
 	return 1
 }
+
+func nextMonth(month Month) Month {
+	if month.Month == 12 {
+		return Month{month.Year + 1, 1}
+	}
+	return Month{month.Year, month.Month + 1}
+}
