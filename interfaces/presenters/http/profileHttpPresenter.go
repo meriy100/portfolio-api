@@ -38,6 +38,11 @@ func (pp *ProfilePresenter) OutputProfileSaveError(err error) error {
 	return nil
 }
 
+func (pp *ProfilePresenter) OutputDeployError(err error) error {
+	http.Error(pp.w, fmt.Sprintf("OutputDeployError: %v\n", err.Error()), http.StatusInternalServerError)
+	return nil
+}
+
 func (pp *ProfilePresenter) OutputSuccessUpdate() error {
 	_, err := fmt.Fprintf(pp.w, "Success Update Profile!")
 	return err

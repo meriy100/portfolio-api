@@ -33,6 +33,11 @@ func (pp *ProfilePresenter) OutputProfileSaveError(err error) error {
 	return nil
 }
 
+func (pp *ProfilePresenter) OutputDeployError(err error) error {
+	fmt.Printf("OutputDeployError: %v\n", err)
+	return nil
+}
+
 func (pp *ProfilePresenter) OutputSuccessUpdate() error {
 	fmt.Printf("Success Update Profile!")
 	return nil

@@ -47,6 +47,7 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 	profileController := controllerHttp.NewProfileController(
 		repositories.NewPostRepository(),
 		repositories.NewProfileRepository(ctx, firestoreClient),
+		repositories.NewContentDeliveryRepository(),
 		usecase.NewProfileInteractor,
 		presenterHttp.NewProfilePresenter,
 	)

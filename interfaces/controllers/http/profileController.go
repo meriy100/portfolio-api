@@ -5,25 +5,28 @@ import (
 	"net/http"
 )
 
-type profileControllerInputPortFactory func(ports.ProfileOutputPort, ports.PostRepository, ports.ProfileRepository) ports.ProfileInputPort
+type profileControllerInputPortFactory func(ports.ProfileOutputPort, ports.PostRepository, ports.ProfileRepository, ports.ContentDeliveryRepository) ports.ProfileInputPort
 type profileControllerOutputPortFactory func(w http.ResponseWriter) ports.ProfileOutputPort
 
 type ProfileController struct {
-	ProfileRepository ports.ProfileRepository
-	PostRepository    ports.PostRepository
-	InputPortFactory  profileControllerInputPortFactory
-	OutputPortFactory profileControllerOutputPortFactory
+	ProfileRepository         ports.ProfileRepository
+	PostRepository            ports.PostRepository
+	contentDeliveryRepository ports.ContentDeliveryRepository
+	InputPortFactory          profileControllerInputPortFactory
+	OutputPortFactory         profileControllerOutputPortFactory
 }
 
 func NewProfileController(
 	postRepository ports.PostRepository,
 	profileRepository ports.ProfileRepository,
+	contentDeliveryRepository ports.ContentDeliveryRepository,
 	inputFactory profileControllerInputPortFactory,
 	outputFactory profileControllerOutputPortFactory,
 ) *ProfileController {
 	return &ProfileController{
 		profileRepository,
 		postRepository,
+		contentDeliveryRepository,
 		inputFactory,
 		outputFactory,
 	}
@@ -42,5 +45,5 @@ func (pc *ProfileController) UpdateProfile(w http.ResponseWriter, r *http.Reques
 }
 
 func (pc *ProfileController) newInputPort(w http.ResponseWriter) ports.ProfileInputPort {
-	return pc.InputPortFactory(pc.OutputPortFactory(w), pc.PostRepository, pc.ProfileRepository)
+	return pc.InputPortFactory(pc.OutputPortFactory(w), pc.PostRepository, pc.ProfileRepository, pc.contentDeliveryRepository)
 }

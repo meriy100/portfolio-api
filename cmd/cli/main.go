@@ -23,6 +23,7 @@ func main() {
 	profileController := controllerCli.NewProfileCli(
 		repositories.NewPostRepository(),
 		repositories.NewProfileRepository(ctx, firestoreClient),
+		repositories.NewContentDeliveryRepository(),
 		usecase.NewProfileInteractor,
 		presenterCli.NewProfilePresenter,
 	)

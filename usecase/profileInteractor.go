@@ -1,18 +1,23 @@
 package usecase
 
-import "github.com/meriy100/portfolio-api/usecase/ports"
+import (
+	"context"
+	"github.com/meriy100/portfolio-api/usecase/ports"
+)
 
 type ProfileInteractor struct {
-	outputPort        ports.ProfileOutputPort
-	postRepository    ports.PostRepository
-	profileRepository ports.ProfileRepository
+	outputPort                ports.ProfileOutputPort
+	postRepository            ports.PostRepository
+	profileRepository         ports.ProfileRepository
+	contentDeliveryRepository ports.ContentDeliveryRepository
 }
 
-func NewProfileInteractor(outputPort ports.ProfileOutputPort, postRepository ports.PostRepository, profileRepository ports.ProfileRepository) ports.ProfileInputPort {
+func NewProfileInteractor(outputPort ports.ProfileOutputPort, postRepository ports.PostRepository, profileRepository ports.ProfileRepository, contentDeliveryRepository ports.ContentDeliveryRepository) ports.ProfileInputPort {
 	return &ProfileInteractor{
 		outputPort,
 		postRepository,
 		profileRepository,
+		contentDeliveryRepository,
 	}
 }
 func (pi *ProfileInteractor) ShowProfile() error {
@@ -36,6 +41,10 @@ func (pi *ProfileInteractor) UpdateProfile() error {
 	}
 	if err := pi.profileRepository.Save(profile); err != nil {
 		return pi.outputPort.OutputProfileSaveError(err)
+	}
+
+	if err := pi.contentDeliveryRepository.Deploy(context.Background()); err != nil {
+		return pi.outputPort.OutputDeployError(err)
 	}
 
 	return pi.outputPort.OutputSuccessUpdate()
