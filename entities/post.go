@@ -168,7 +168,7 @@ func separateHeadTail(s string) (string, string) {
 
 func strToMonth(s string) (Month, error) {
 	ss := strings.Split(s, "/")
-	if len(ss) != 2 {
+	if len(ss) != pair {
 		return Month{}, fmt.Errorf("can't month parse. string split '/', got %v", ss)
 	}
 	y, err := strconv.Atoi(ss[0])
