@@ -66,7 +66,7 @@ func (h *HistoryPresenter) OutputHistories(histories []*entities.History) error 
 		return err
 	}
 
-	_, err = fmt.Fprintf(h.w, string(j))
+	_, err = fmt.Fprint(h.w, string(j))
 
 	return err
 }

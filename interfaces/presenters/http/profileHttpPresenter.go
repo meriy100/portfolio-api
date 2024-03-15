@@ -54,6 +54,6 @@ func (pp *ProfilePresenter) OutputProfile(profile *entities.Profile) error {
 	if err != nil {
 		return err
 	}
-	_, err = fmt.Fprintf(pp.w, string(j))
+	_, err = fmt.Fprint(pp.w, string(j))
 	return err
 }

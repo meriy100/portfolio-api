@@ -52,7 +52,7 @@ func (s *SkillPresenter) OutputSkills(skills []*entities.Skill) error {
 		return err
 	}
 
-	_, err = fmt.Fprintf(s.w, string(j))
+	_, err = fmt.Fprint(s.w, string(j))
 
 	return err
 }
