@@ -7,6 +7,8 @@ import (
 )
 
 func init() {
+	functions.HTTP("profile", Profile)
+	functions.HTTP("histories", Histories)
 	functions.HTTP("skills", Skills)
 }
 

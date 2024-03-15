@@ -31,6 +31,8 @@ jobs:
     strategy:
       matrix:
         function: [
+          "profile",
+          "histories",
           "skills",
         ]
     steps:
