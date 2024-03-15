@@ -151,14 +151,15 @@ func toProduct(productPart string) (Product, error) {
 	return product, nil
 }
 
+const onlyTitle = 1
 const pair = 2
 
 func separateHeadTail(s string) (string, string) {
 	ss := strings.SplitN(strings.Replace(s, "\r", "", -1), "\n", pair)
 	switch len(ss) {
-	case 1:
+	case onlyTitle:
 		return strings.TrimSpace(ss[0]), ""
-	case 2:
+	case pair:
 		return strings.TrimSpace(ss[0]), strings.TrimSpace(ss[1])
 	default:
 		return "", ""
