@@ -13,3 +13,7 @@ gcloud functions deploy $FUNCTION_NAME \
   --max-instances=$MAX_INSTANCES \
   --concurrency=$CONCURRENCY \
   --timeout=$TIMEOUT
+
+gcloud functions add-invoker-policy-binding $FUNCTION_NAME \
+      --region="asia-northeast1" \
+      --member="allUsers"
