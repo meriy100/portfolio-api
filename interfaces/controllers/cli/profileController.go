@@ -5,25 +5,28 @@ import (
 	"github.com/meriy100/portfolio-api/usecase/ports"
 )
 
-type profileControllerInputPortFactory func(ports.ProfileOutputPort, ports.PostRepository, ports.ProfileRepository) ports.ProfileInputPort
+type profileControllerInputPortFactory func(ports.ProfileOutputPort, ports.PostRepository, ports.ProfileRepository, ports.ContentDeliveryRepository) ports.ProfileInputPort
 type profileControllerOutputPortFactory func() ports.ProfileOutputPort
 
 type ProfileCli struct {
-	ProfileRepository ports.ProfileRepository
-	PostRepository    ports.PostRepository
-	InputPortFactory  profileControllerInputPortFactory
-	OutputPortFactory profileControllerOutputPortFactory
+	ProfileRepository         ports.ProfileRepository
+	PostRepository            ports.PostRepository
+	contentDeliveryRepository ports.ContentDeliveryRepository
+	InputPortFactory          profileControllerInputPortFactory
+	OutputPortFactory         profileControllerOutputPortFactory
 }
 
 func NewProfileCli(
 	postRepository ports.PostRepository,
 	profileRepository ports.ProfileRepository,
+	contentDeliveryRepository ports.ContentDeliveryRepository,
 	inputFactory profileControllerInputPortFactory,
 	outputFactory profileControllerOutputPortFactory,
 ) *ProfileCli {
 	return &ProfileCli{
 		profileRepository,
 		postRepository,
+		contentDeliveryRepository,
 		inputFactory,
 		outputFactory,
 	}
@@ -42,5 +45,5 @@ func (pc *ProfileCli) UpdateProfile() {
 }
 
 func (pc *ProfileCli) newInputPort() ports.ProfileInputPort {
-	return pc.InputPortFactory(pc.OutputPortFactory(), pc.PostRepository, pc.ProfileRepository)
+	return pc.InputPortFactory(pc.OutputPortFactory(), pc.PostRepository, pc.ProfileRepository, pc.contentDeliveryRepository)
 }

@@ -19,6 +19,7 @@ type ProfileOutputPort interface {
 	OutputToProfileError(error) error
 	OutputProfileSaveError(error) error
 	OutputFindProfileError(error) error
+	OutputDeployError(error) error
 
 	OutputSuccessUpdate() error
 

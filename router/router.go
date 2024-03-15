@@ -10,7 +10,6 @@ import (
 	"github.com/meriy100/portfolio-api/interfaces/repositories"
 	"github.com/meriy100/portfolio-api/usecase"
 	"net/http"
-	"os"
 )
 
 func setHeader(w http.ResponseWriter, r *http.Request) {
@@ -27,7 +26,7 @@ func setHeader(w http.ResponseWriter, r *http.Request) {
 }
 
 func initialFirestoreClient(ctx context.Context) (*firestore.Client, error) {
-	firestoreClient, err := adapters.InitialFireStoreClient(ctx, os.Getenv("SERVICE_ACCOUNT_KEY_PATH"))
+	firestoreClient, err := adapters.InitialFireStoreClient(ctx)
 
 	if err != nil {
 		return nil, err
@@ -47,6 +46,7 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 	profileController := controllerHttp.NewProfileController(
 		repositories.NewPostRepository(),
 		repositories.NewProfileRepository(ctx, firestoreClient),
+		repositories.NewContentDeliveryRepository(),
 		usecase.NewProfileInteractor,
 		presenterHttp.NewProfilePresenter,
 	)
