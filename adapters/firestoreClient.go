@@ -1,10 +1,11 @@
 package adapters
 
 import (
-	"cloud.google.com/go/firestore"
 	"context"
-	firebase "firebase.google.com/go"
 	"fmt"
+
+	"cloud.google.com/go/firestore"
+	firebase "firebase.google.com/go"
 )
 
 func InitialFireStoreClient(ctx context.Context) (*firestore.Client, error) {

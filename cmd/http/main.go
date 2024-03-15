@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/meriy100/portfolio-api/router"
 	"net/http"
+
+	"github.com/meriy100/portfolio-api/router"
 )
 
 func main() {

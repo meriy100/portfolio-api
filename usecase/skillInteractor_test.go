@@ -2,10 +2,11 @@ package usecase
 
 import (
 	"fmt"
-	"github.com/meriy100/portfolio-api/entities"
-	"github.com/meriy100/portfolio-api/usecase/ports"
 	"reflect"
 	"testing"
+
+	"github.com/meriy100/portfolio-api/entities"
+	"github.com/meriy100/portfolio-api/usecase/ports"
 )
 
 type TestSkillOutputPort struct {

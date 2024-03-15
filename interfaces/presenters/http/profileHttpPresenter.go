@@ -3,9 +3,10 @@ package http
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
+
 	"github.com/meriy100/portfolio-api/entities"
 	"github.com/meriy100/portfolio-api/usecase/ports"
-	"net/http"
 )
 
 type ProfilePresenter struct {

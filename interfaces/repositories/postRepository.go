@@ -3,10 +3,11 @@ package repositories
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/meriy100/portfolio-api/entities"
 	"io"
 	"net/http"
 	"os"
+
+	"github.com/meriy100/portfolio-api/entities"
 )
 
 type PostRepository struct {

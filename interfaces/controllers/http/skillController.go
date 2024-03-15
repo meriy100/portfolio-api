@@ -2,8 +2,9 @@ package http
 
 import (
 	"fmt"
-	"github.com/meriy100/portfolio-api/usecase/ports"
 	"net/http"
+
+	"github.com/meriy100/portfolio-api/usecase/ports"
 )
 
 type skillInputPortFactory func(ports.SkillOutputPort, ports.PostRepository, ports.SkillRepository) ports.SkillInputPort

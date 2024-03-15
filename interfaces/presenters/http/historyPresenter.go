@@ -3,10 +3,11 @@ package http
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/meriy100/portfolio-api/entities"
-	"github.com/meriy100/portfolio-api/usecase/ports"
 	"net/http"
 	"sort"
+
+	"github.com/meriy100/portfolio-api/entities"
+	"github.com/meriy100/portfolio-api/usecase/ports"
 )
 
 type HistoryPresenter struct {

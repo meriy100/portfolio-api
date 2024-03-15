@@ -3,12 +3,13 @@ package main
 import (
 	"context"
 	"fmt"
+	"os"
+
 	"github.com/meriy100/portfolio-api/adapters"
 	controllerCli "github.com/meriy100/portfolio-api/interfaces/controllers/cli"
 	presenterCli "github.com/meriy100/portfolio-api/interfaces/presenters/cli"
 	"github.com/meriy100/portfolio-api/interfaces/repositories"
 	"github.com/meriy100/portfolio-api/usecase"
-	"os"
 )
 
 func main() {
