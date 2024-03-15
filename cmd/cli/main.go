@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/meriy100/portfolio-api/adapters"
 	controllerCli "github.com/meriy100/portfolio-api/interfaces/controllers/cli"
@@ -17,8 +16,7 @@ func main() {
 	firestoreClient, err := adapters.InitialFireStoreClient(ctx)
 
 	if err != nil {
-		fmt.Printf("Error initial firestore client : %v\n", err)
-		os.Exit(2)
+		panic(fmt.Errorf("error initial firestore client : %w", err))
 	}
 
 	profileController := controllerCli.NewProfileCli(
