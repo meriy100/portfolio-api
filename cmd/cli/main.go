@@ -13,7 +13,7 @@ import (
 
 func main() {
 	ctx := context.Background()
-	firestoreClient, err := adapters.InitialFireStoreClient(ctx, "serviceAccountKey.json")
+	firestoreClient, err := adapters.InitialFireStoreClient(ctx)
 
 	if err != nil {
 		fmt.Printf("Error initial firestore client : %v\n", err)
