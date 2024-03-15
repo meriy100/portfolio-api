@@ -21,6 +21,9 @@ func NewProfileInteractor(outputPort ports.ProfileOutputPort, postRepository por
 		contentDeliveryRepository,
 	}
 }
+
+const ProfilePostID = 253
+
 func (pi *ProfileInteractor) ShowProfile() error {
 	profile, err := pi.profileRepository.Find()
 	if err != nil {
@@ -31,7 +34,7 @@ func (pi *ProfileInteractor) ShowProfile() error {
 }
 
 func (pi *ProfileInteractor) UpdateProfile() error {
-	post, err := pi.postRepository.FetchPost(253)
+	post, err := pi.postRepository.FetchPost(ProfilePostID)
 	if err != nil {
 		return pi.outputPort.OutputFetchPostError(err)
 	}
