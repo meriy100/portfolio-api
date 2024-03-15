@@ -3,10 +3,11 @@ package http
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/meriy100/portfolio-api/entities"
-	"github.com/meriy100/portfolio-api/usecase/ports"
 	"net/http"
 	"sort"
+
+	"github.com/meriy100/portfolio-api/entities"
+	"github.com/meriy100/portfolio-api/usecase/ports"
 )
 
 type SkillPresenter struct {
@@ -51,7 +52,7 @@ func (s *SkillPresenter) OutputSkills(skills []*entities.Skill) error {
 		return err
 	}
 
-	_, err = fmt.Fprintf(s.w, string(j))
+	_, err = fmt.Fprint(s.w, string(j))
 
 	return err
 }

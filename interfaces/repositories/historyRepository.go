@@ -1,8 +1,9 @@
 package repositories
 
 import (
-	"cloud.google.com/go/firestore"
 	"context"
+
+	"cloud.google.com/go/firestore"
 	"github.com/meriy100/portfolio-api/entities"
 	"google.golang.org/api/iterator"
 )

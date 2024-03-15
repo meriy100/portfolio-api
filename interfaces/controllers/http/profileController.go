@@ -1,8 +1,9 @@
 package http
 
 import (
-	"github.com/meriy100/portfolio-api/usecase/ports"
 	"net/http"
+
+	"github.com/meriy100/portfolio-api/usecase/ports"
 )
 
 type profileControllerInputPortFactory func(ports.ProfileOutputPort, ports.PostRepository, ports.ProfileRepository, ports.ContentDeliveryRepository) ports.ProfileInputPort

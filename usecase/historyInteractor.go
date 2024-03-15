@@ -16,8 +16,10 @@ func NewHistoryInteractor(outputPort ports.HistoryOutputPort, postRepository por
 	}
 }
 
+const HistoriesPostID = 254
+
 func (h *HistoryInteractor) UpdateHistories() error {
-	post, err := h.postRepository.FetchPost(254)
+	post, err := h.postRepository.FetchPost(HistoriesPostID)
 	if err != nil {
 		return h.outputPort.OutputFetchPostError(err)
 	}

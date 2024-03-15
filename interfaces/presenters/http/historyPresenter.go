@@ -3,10 +3,11 @@ package http
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/meriy100/portfolio-api/entities"
-	"github.com/meriy100/portfolio-api/usecase/ports"
 	"net/http"
 	"sort"
+
+	"github.com/meriy100/portfolio-api/entities"
+	"github.com/meriy100/portfolio-api/usecase/ports"
 )
 
 type HistoryPresenter struct {
@@ -65,7 +66,7 @@ func (h *HistoryPresenter) OutputHistories(histories []*entities.History) error 
 		return err
 	}
 
-	_, err = fmt.Fprintf(h.w, string(j))
+	_, err = fmt.Fprint(h.w, string(j))
 
 	return err
 }

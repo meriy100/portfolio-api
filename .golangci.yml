@@ -1,0 +1,28 @@
+linters:
+  enable:
+    - bodyclose
+    - dogsled
+    - errcheck
+    - gocyclo
+    - gosec
+    - gosimple
+    - govet
+    - ineffassign
+    - misspell
+    - staticcheck
+    - typecheck
+    - unconvert
+    - unparam
+    - unused
+    - gci
+    - gofmt
+    - gomnd
+    - gocognit
+
+run:
+  timeout: 5m
+
+linters-settings:
+  gocognit:
+    # TODO : Set the threshold to 10
+    min-complexity: 54

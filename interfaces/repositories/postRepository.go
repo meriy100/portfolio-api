@@ -3,10 +3,11 @@ package repositories
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/meriy100/portfolio-api/entities"
 	"io"
 	"net/http"
 	"os"
+
+	"github.com/meriy100/portfolio-api/entities"
 )
 
 type PostRepository struct {
@@ -15,6 +16,8 @@ type PostRepository struct {
 func NewPostRepository() *PostRepository {
 	return &PostRepository{}
 }
+
+const BatRequest = 400
 
 func (pr *PostRepository) FetchPost(postId int) (*entities.Post, error) {
 	var post entities.Post
@@ -29,7 +32,7 @@ func (pr *PostRepository) FetchPost(postId int) (*entities.Post, error) {
 		return &post, err
 	}
 
-	if resp.StatusCode >= 400 {
+	if resp.StatusCode >= BatRequest {
 		return nil, fmt.Errorf("bad response status code %d", resp.StatusCode)
 	}
 	defer resp.Body.Close()

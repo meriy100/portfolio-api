@@ -18,8 +18,10 @@ func NewSkillInteractor(outputPort ports.SkillOutputPort, postRepository ports.P
 	}
 }
 
+const SkillsPostID = 289
+
 func (s *SkillInteractor) UpdateSkills() error {
-	post, err := s.postRepository.FetchPost(289)
+	post, err := s.postRepository.FetchPost(SkillsPostID)
 	if err != nil {
 		return s.outputPort.OutputFetchPostError(err)
 	}

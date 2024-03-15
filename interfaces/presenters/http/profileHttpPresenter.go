@@ -3,9 +3,10 @@ package http
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
+
 	"github.com/meriy100/portfolio-api/entities"
 	"github.com/meriy100/portfolio-api/usecase/ports"
-	"net/http"
 )
 
 type ProfilePresenter struct {
@@ -53,6 +54,6 @@ func (pp *ProfilePresenter) OutputProfile(profile *entities.Profile) error {
 	if err != nil {
 		return err
 	}
-	_, err = fmt.Fprintf(pp.w, string(j))
+	_, err = fmt.Fprint(pp.w, string(j))
 	return err
 }
