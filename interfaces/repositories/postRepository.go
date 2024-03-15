@@ -17,6 +17,8 @@ func NewPostRepository() *PostRepository {
 	return &PostRepository{}
 }
 
+const BatRequest = 400
+
 func (pr *PostRepository) FetchPost(postId int) (*entities.Post, error) {
 	var post entities.Post
 	client := &http.Client{}
@@ -30,7 +32,7 @@ func (pr *PostRepository) FetchPost(postId int) (*entities.Post, error) {
 		return &post, err
 	}
 
-	if resp.StatusCode >= 400 {
+	if resp.StatusCode >= BatRequest {
 		return nil, fmt.Errorf("bad response status code %d", resp.StatusCode)
 	}
 	defer resp.Body.Close()
