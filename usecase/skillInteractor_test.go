@@ -11,7 +11,6 @@ import (
 
 type TestSkillOutputPort struct {
 	ports.SkillOutputPort
-	output []*entities.Skill
 }
 
 func (tSOP *TestSkillOutputPort) OutputSuccessUpdate() error {
