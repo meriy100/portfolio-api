@@ -7,6 +7,8 @@ import (
 	"os"
 )
 
+const BatRequest = 400
+
 func InitialVercelHookRequest(ctx context.Context) error {
 
 	fmt.Println(os.Getenv("VERCEL_DEPLOY_HOOK_URL"))
@@ -20,7 +22,7 @@ func InitialVercelHookRequest(ctx context.Context) error {
 
 	defer resp.Body.Close()
 
-	if resp.StatusCode < 400 {
+	if resp.StatusCode < BatRequest {
 		return nil
 	}
 	return fmt.Errorf("vercel deploy hook request error")
