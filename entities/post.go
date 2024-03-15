@@ -151,8 +151,10 @@ func toProduct(productPart string) (Product, error) {
 	return product, nil
 }
 
+const pair = 2
+
 func separateHeadTail(s string) (string, string) {
-	ss := strings.SplitN(strings.Replace(s, "\r", "", -1), "\n", 2)
+	ss := strings.SplitN(strings.Replace(s, "\r", "", -1), "\n", pair)
 	switch len(ss) {
 	case 1:
 		return strings.TrimSpace(ss[0]), ""
