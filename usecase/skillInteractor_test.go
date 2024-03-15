@@ -155,17 +155,17 @@ func TestSkillInteractor_UpdateSkills(t *testing.T) {
 			for _, wantSkill := range tt.want {
 				expect := findSkill(wantSkill.Name, tt.fields.skillRepository.insert)
 				if expect == nil {
-					t.Errorf("UdateSkills() saved value = %v, want %v", tt.fields.skillRepository.insert, tt.want)
+					t.Fatalf("UpdateSkills() saved value = %v, want %v", tt.fields.skillRepository.insert, tt.want)
 				}
 
 				if expect.Lv != wantSkill.Lv {
-					t.Errorf("UdateSkills() %v's Lv = %v, want %v", expect.Name, expect.Lv, wantSkill.Lv)
+					t.Errorf("UpdateSkills() %v's Lv = %v, want %v", expect.Name, expect.Lv, wantSkill.Lv)
 				}
 				if expect.Category != wantSkill.Category {
-					t.Errorf("UdateSkills() %v's Category = %v, want %v", expect.Name, expect.Category, wantSkill.Category)
+					t.Errorf("UpdateSkills() %v's Category = %v, want %v", expect.Name, expect.Category, wantSkill.Category)
 				}
 				if expect.Description != wantSkill.Description {
-					t.Errorf("UdateSkills() %v's Description = %v, want %v", expect.Name, expect.Description, wantSkill.Description)
+					t.Errorf("UpdateSkills() %v's Description = %v, want %v", expect.Name, expect.Description, wantSkill.Description)
 				}
 			}
 		})
