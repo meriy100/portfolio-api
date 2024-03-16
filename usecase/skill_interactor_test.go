@@ -4,7 +4,10 @@ import (
 	"fmt"
 	"reflect"
 	"testing"
+	"time"
 
+	"github.com/Songmu/flextime"
+	"github.com/google/go-cmp/cmp"
 	"github.com/meriy100/portfolio-api/entities"
 	"github.com/meriy100/portfolio-api/usecase/ports"
 )
@@ -96,16 +99,8 @@ func TestSkillInteractor_IndexSkills(t *testing.T) {
 	}
 }
 
-func findSkill(name string, skills []*entities.Skill) *entities.Skill {
-	for _, s := range skills {
-		if s.Name == name {
-			return s
-		}
-	}
-
-	return nil
-}
 func TestSkillInteractor_UpdateSkills(t *testing.T) {
+	now := time.Date(2021, 1, 1, 0, 0, 0, 0, time.UTC)
 	type fields struct {
 		outputPort      ports.SkillOutputPort
 		postRepository  ports.PostRepository
@@ -132,6 +127,7 @@ func TestSkillInteractor_UpdateSkills(t *testing.T) {
 					Lv:          2,
 					Description: "testD",
 					Category:    entities.Os,
+					Timestamp:   now,
 				},
 			},
 			false,
@@ -139,6 +135,9 @@ func TestSkillInteractor_UpdateSkills(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			flextime.Fix(now)
+			defer flextime.Restore()
+
 			s := &SkillInteractor{
 				outputPort:      tt.fields.outputPort,
 				postRepository:  tt.fields.postRepository,
@@ -151,22 +150,8 @@ func TestSkillInteractor_UpdateSkills(t *testing.T) {
 			if len(tt.want) != len(tt.fields.skillRepository.insert) {
 				t.Errorf("UdateSkills() saved value = %v, want %v", tt.fields.skillRepository.insert, tt.want)
 			}
-
-			for _, wantSkill := range tt.want {
-				expect := findSkill(wantSkill.Name, tt.fields.skillRepository.insert)
-				if expect == nil {
-					t.Fatalf("UpdateSkills() saved value = %v, want %v", tt.fields.skillRepository.insert, tt.want)
-				}
-
-				if expect.Lv != wantSkill.Lv {
-					t.Errorf("UpdateSkills() %v's Lv = %v, want %v", expect.Name, expect.Lv, wantSkill.Lv)
-				}
-				if expect.Category != wantSkill.Category {
-					t.Errorf("UpdateSkills() %v's Category = %v, want %v", expect.Name, expect.Category, wantSkill.Category)
-				}
-				if expect.Description != wantSkill.Description {
-					t.Errorf("UpdateSkills() %v's Description = %v, want %v", expect.Name, expect.Description, wantSkill.Description)
-				}
+			if diff := cmp.Diff(tt.want, tt.fields.skillRepository.insert); diff != "" {
+				t.Errorf("UpdateSkills() mismatch (-want +got):\n%s", diff)
 			}
 		})
 	}

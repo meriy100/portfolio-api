@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strings"
 	"time"
+
+	"github.com/Songmu/flextime"
 )
 
 type SkillCategory int
@@ -32,7 +34,7 @@ func NewSkill(name string, lv int, description string, category SkillCategory) *
 		lv,
 		description,
 		category,
-		time.Now(),
+		flextime.Now(),
 	}
 }
 

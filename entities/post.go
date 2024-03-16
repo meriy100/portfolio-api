@@ -117,6 +117,17 @@ func toHistory(historyPart string) (History, error) {
 	return history, nil
 }
 
+func toEndMonth(body string) (*Month, error) {
+	if len(body) != 0 {
+		em, err := strToMonth(body)
+		if err != nil {
+			return nil, err
+		}
+		return &em, nil
+	}
+	return nil, nil
+}
+
 func toProduct(productPart string) (Product, error) {
 	product := Product{}
 	prdName, prdBody := separateHeadTail(productPart)
@@ -133,13 +144,11 @@ func toProduct(productPart string) (Product, error) {
 			}
 			product.StartMonth = sm
 		case "endMonth":
-			if len(body) != 0 {
-				em, err := strToMonth(body)
-				if err != nil {
-					return Product{}, err
-				}
-				product.EndMonth = &em
+			endMonth, err := toEndMonth(body)
+			if err != nil {
+				return Product{}, err
 			}
+			product.EndMonth = endMonth
 		case "description":
 			product.Description = mdListToSlice(body)
 		case "technologyUsed":
