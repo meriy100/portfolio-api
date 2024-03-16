@@ -24,5 +24,4 @@ run:
 
 linters-settings:
   gocognit:
-    # TODO : Set the threshold to 10
-    min-complexity: 54
+    min-complexity: 10
