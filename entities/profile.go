@@ -1,6 +1,10 @@
 package entities
 
-import "time"
+import (
+	"time"
+
+	"github.com/Songmu/flextime"
+)
 
 type Profile struct {
 	Job              string    `json:"job"`
@@ -12,5 +16,5 @@ type Profile struct {
 }
 
 func NewProfile(job, description string, skillDescription, licenses []string, pr string) *Profile {
-	return &Profile{job, description, skillDescription, licenses, pr, time.Now()}
+	return &Profile{job, description, skillDescription, licenses, pr, flextime.Now()}
 }
