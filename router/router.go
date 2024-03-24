@@ -72,6 +72,7 @@ func Histories(w http.ResponseWriter, r *http.Request) {
 	historyController := controllerHttp.NewHistoryController(
 		repositories.NewHistoryRepository(ctx, firestoreClient),
 		repositories.NewPostRepository(),
+		repositories.NewContentDeliveryRepository(),
 		usecase.NewHistoryInteractor,
 		presenterHttp.NewHistoryPresenter,
 	)

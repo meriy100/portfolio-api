@@ -34,6 +34,11 @@ func (h *HistoryPresenter) OutputFetchHistoriesError(err error) error {
 	return nil
 }
 
+func (h *HistoryPresenter) OutputDeployError(err error) error {
+	fmt.Printf("OutputDeployError: %v\n", err)
+	return nil
+}
+
 func (h *HistoryPresenter) OutputSuccessUpdate() error {
 	fmt.Printf("Success Update Histories!")
 	return nil

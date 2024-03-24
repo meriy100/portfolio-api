@@ -38,6 +38,11 @@ func (h *HistoryPresenter) OutputFetchHistoriesError(err error) error {
 	return nil
 }
 
+func (h *HistoryPresenter) OutputDeployError(err error) error {
+	http.Error(h.w, fmt.Sprintf("OutputDeployError: %v\n", err), http.StatusInternalServerError)
+	return nil
+}
+
 func (h *HistoryPresenter) OutputSuccessUpdate() error {
 	_, err := fmt.Fprintf(h.w, "Success Update Histories!")
 	return err
