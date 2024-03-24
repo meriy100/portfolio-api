@@ -17,6 +17,7 @@ type HistoryOutputPort interface {
 	OutputToHistoriesError(error) error
 	OutputHistorySaveError(*entities.History, error) error
 	OutputFetchHistoriesError(error) error
+	OutputDeployError(error) error
 
 	OutputSuccessUpdate() error
 	OutputHistories([]*entities.History) error

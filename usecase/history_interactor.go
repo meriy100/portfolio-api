@@ -1,18 +1,24 @@
 package usecase
 
-import "github.com/meriy100/portfolio-api/usecase/ports"
+import (
+	"context"
+
+	"github.com/meriy100/portfolio-api/usecase/ports"
+)
 
 type HistoryInteractor struct {
-	outputPort        ports.HistoryOutputPort
-	postRepository    ports.PostRepository
-	HistoryRepository ports.HistoryRepository
+	outputPort                ports.HistoryOutputPort
+	postRepository            ports.PostRepository
+	HistoryRepository         ports.HistoryRepository
+	contentDeliveryRepository ports.ContentDeliveryRepository
 }
 
-func NewHistoryInteractor(outputPort ports.HistoryOutputPort, postRepository ports.PostRepository, profileRepository ports.HistoryRepository) ports.HistoryInputPort {
+func NewHistoryInteractor(outputPort ports.HistoryOutputPort, postRepository ports.PostRepository, profileRepository ports.HistoryRepository, contentDeliveryRepository ports.ContentDeliveryRepository) ports.HistoryInputPort {
 	return &HistoryInteractor{
 		outputPort,
 		postRepository,
 		profileRepository,
+		contentDeliveryRepository,
 	}
 }
 
@@ -34,6 +40,10 @@ func (h *HistoryInteractor) UpdateHistories() error {
 		if err != nil {
 			return h.outputPort.OutputHistorySaveError(history, err)
 		}
+	}
+
+	if err := h.contentDeliveryRepository.Deploy(context.Background()); err != nil {
+		return h.outputPort.OutputDeployError(err)
 	}
 
 	return h.outputPort.OutputSuccessUpdate()

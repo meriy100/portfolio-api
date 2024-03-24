@@ -30,6 +30,7 @@ func main() {
 	historyController := controllerCli.NewHistoryController(
 		repositories.NewHistoryRepository(ctx, firestoreClient),
 		repositories.NewPostRepository(),
+		repositories.NewContentDeliveryRepository(),
 		usecase.NewHistoryInteractor,
 		presenterCli.NewHistoryPresenter,
 	)
