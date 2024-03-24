@@ -41,7 +41,7 @@ jobs:
         id: deployment
         with:
           token: '${{ secrets.GITHUB_TOKEN }}'
-          environment: ${{ inputs.environment }}
+          environment: ${{ inputs.environment }}-${{ matrix.function }}
       - uses: actions/checkout@v4
       - name: Authenticate to Google Cloud
         id: auth
@@ -72,7 +72,7 @@ jobs:
         with:
           token: '${{ secrets.GITHUB_TOKEN }}'
           deployment-id: ${{ steps.deployment.outputs.deployment_id }}
-          environment: ${{ inputs.environment }}
+          environment: ${{ inputs.environment }}-${{ matrix.function }}
           state: 'success'
 
       - name: Update deployment status (failure)
@@ -81,5 +81,5 @@ jobs:
         with:
           token: '${{ secrets.GITHUB_TOKEN }}'
           deployment-id: ${{ steps.deployment.outputs.deployment_id }}
-          environment: ${{ inputs.environment }}
+          environment: ${{ inputs.environment }}-${{ matrix.function }}
           state: 'failure'
