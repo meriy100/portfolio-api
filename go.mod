@@ -8,7 +8,7 @@ require (
 	github.com/GoogleCloudPlatform/functions-framework-go v1.8.1
 	github.com/Songmu/flextime v0.1.0
 	github.com/google/go-cmp v0.6.0
-	google.golang.org/api v0.170.0
+	google.golang.org/api v0.172.0
 )
 
 require (
@@ -27,7 +27,7 @@ require (
 	github.com/google/s2a-go v0.1.7 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.2 // indirect
-	github.com/googleapis/gax-go/v2 v2.12.2 // indirect
+	github.com/googleapis/gax-go/v2 v2.12.3 // indirect
 	github.com/json-iterator/go v1.1.10 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421 // indirect
 	github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742 // indirect
@@ -49,8 +49,8 @@ require (
 	golang.org/x/time v0.5.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/genproto v0.0.0-20240213162025-012b6fc9bca9 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20240304161311-37d4d3c04a78 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240311132316-a219d84964c2 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20240311132316-a219d84964c2 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240318140521-94a12d6c2237 // indirect
 	google.golang.org/grpc v1.62.1 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
 )
