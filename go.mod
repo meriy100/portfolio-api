@@ -5,7 +5,7 @@ go 1.21
 require (
 	cloud.google.com/go/firestore v1.15.0
 	firebase.google.com/go v3.13.0+incompatible
-	github.com/GoogleCloudPlatform/functions-framework-go v1.8.1
+	github.com/GoogleCloudPlatform/functions-framework-go v1.9.1
 	github.com/Songmu/flextime v0.1.0
 	github.com/google/go-cmp v0.6.0
 	google.golang.org/api v0.189.0
@@ -19,7 +19,7 @@ require (
 	cloud.google.com/go/iam v1.1.10 // indirect
 	cloud.google.com/go/longrunning v0.5.9 // indirect
 	cloud.google.com/go/storage v1.41.0 // indirect
-	github.com/cloudevents/sdk-go/v2 v2.14.0 // indirect
+	github.com/cloudevents/sdk-go/v2 v2.15.2 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
