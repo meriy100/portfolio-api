@@ -7,7 +7,7 @@ require (
 	firebase.google.com/go v3.13.0+incompatible
 	github.com/GoogleCloudPlatform/functions-framework-go v1.8.1
 	github.com/Songmu/flextime v0.1.0
-	github.com/google/go-cmp v0.6.0
+	github.com/google/go-cmp v0.7.0
 	google.golang.org/api v0.189.0
 )
 
