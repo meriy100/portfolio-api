@@ -28,7 +28,7 @@ jobs:
         with:
           go-version: ${{ env.GO_VERSION }}
           cache: false
-      - uses: golangci/golangci-lint-action@v6
+      - uses: golangci/golangci-lint-action@v7
 
   test:
     permissions:
